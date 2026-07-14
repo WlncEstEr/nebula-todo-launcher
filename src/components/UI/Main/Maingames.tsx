@@ -1,7 +1,7 @@
 import { PlusCircle } from 'lucide-react'
 import { ItemGame } from '../../../store/store'
 import { Button } from '../Button/Button'
-import { FiledDiscount } from '../FieldDiscount/FiledDiscount'
+import { FieldDiscount } from '../FieldDiscount/FieldDiscount'
 
 interface DetailsProps {
 	setIsDetails: React.Dispatch<React.SetStateAction<boolean>>
@@ -22,7 +22,7 @@ export function MainGames({ setIsDetails }: DetailsProps) {
 					alt={itemGame?.title}
 				/>
 				<div className="absolute right-3 bottom-3">
-					<FiledDiscount
+					<FieldDiscount
 						price={itemGame?.price || 0}
 						oldPrice={itemGame?.oldPrice || 0}
 					/>

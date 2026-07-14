@@ -1,9 +1,9 @@
-interface IFiledDiscount {
+interface IFieldDiscount {
 	price: number
 	oldPrice?: number
 }
 
-export function FiledDiscount({ price, oldPrice }: IFiledDiscount) {
+export function FieldDiscount({ price, oldPrice }: IFieldDiscount) {
 	return (
 		<div className="bg-sc  rounded-2xl w-fit flex items-center  ">
 			{oldPrice! > 0 && (

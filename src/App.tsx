@@ -3,7 +3,7 @@ import { useState } from 'react'
 import './App.css'
 import { Header } from './components/UI/Header'
 import Details from './components/UI/Main/Details/Details'
-import { MainGames } from './components/UI/Main/Maingames'
+import { MainGames } from './components/UI/Main/MainGames'
 import { Recommendation } from './components/UI/Main/Recommendation'
 import { ItemGame } from './store/store'
 

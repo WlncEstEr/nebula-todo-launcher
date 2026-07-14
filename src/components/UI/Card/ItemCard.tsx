@@ -1,6 +1,6 @@
 import cn from 'clsx'
 import type { IGame } from '../../../data/games.data'
-import { FiledDiscount } from '../FieldDiscount/FiledDiscount'
+import { FiledDiscount } from '../FieldDiscount/FieldDiscount'
 
 interface IItemCard {
 	game: IGame

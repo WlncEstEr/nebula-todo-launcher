@@ -1,6 +1,6 @@
 import cn from 'clsx'
 import type { IGame } from '../../../data/games.data'
-import { FiledDiscount } from '../FieldDiscount/FieldDiscount'
+import { FieldDiscount } from '../FieldDiscount/FieldDiscount'
 
 interface IItemCard {
 	game: IGame
@@ -82,7 +82,7 @@ export function ItemCard({
 								'text-gray-300': isActive
 							})}
 						>
-							{game.reiting}%
+							{game.rating}%
 						</p>
 						<span>*</span>
 						<p
@@ -94,7 +94,7 @@ export function ItemCard({
 						</p>
 					</div>
 					<div className="flex justify-end">
-						<FiledDiscount
+						<FieldDiscount
 							price={game.price || 0}
 							oldPrice={game.oldPrice || 0}
 						/>

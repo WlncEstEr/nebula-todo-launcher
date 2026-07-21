@@ -30,7 +30,7 @@ export interface IGame {
 	platforms: string[]
 	releaseDate: string
 	genre: string
-	reiting: number | null
+	rating: number | null
 	creator: string
 	publisher: string
 	price?: number | null
@@ -48,7 +48,7 @@ export const gamesData: IGame[] = [
 		platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
 		releaseDate: '2023-02-10',
 		genre: 'Action RPG',
-		reiting: 75,
+		rating: 75,
 		price: 29.99,
 		oldPrice: 59.99,
 		publisher: 'Warner Bros. Interactive Entertainment'
@@ -63,7 +63,7 @@ export const gamesData: IGame[] = [
 		platforms: ['PC', 'PS4', 'Xbox One'],
 		releaseDate: '2017-09-12',
 		genre: 'Horror Platformer',
-		reiting: 94,
+		rating: 94,
 		price: 4.99,
 		oldPrice: 12.99,
 		publisher: 'BANDAI NAMCO Entertainment'
@@ -78,7 +78,7 @@ export const gamesData: IGame[] = [
 		platforms: ['PC', 'PS4', 'Xbox One'],
 		releaseDate: '2020-09-12',
 		genre: 'Horror Platformer',
-		reiting: 0,
+		rating: 0,
 		price: 9.99,
 		oldPrice: 0,
 		publisher: 'BANDAI NAMCO Entertainment'
@@ -93,7 +93,7 @@ export const gamesData: IGame[] = [
 		platforms: ['PC', 'Xbox Series X/S'],
 		releaseDate: '2024-03-15',
 		genre: 'First-Person Shooter',
-		reiting: 74,
+		rating: 74,
 		price: 0,
 		publisher: 'Embark Studios'
 	},
@@ -108,7 +108,7 @@ export const gamesData: IGame[] = [
 		platforms: ['PC', 'PS4', 'Xbox One'],
 		releaseDate: '2017-09-12',
 		genre: 'Action Adventure',
-		reiting: 78,
+		rating: 78,
 		price: 19.99,
 		oldPrice: 39.99,
 		publisher: 'THQ Nordic'

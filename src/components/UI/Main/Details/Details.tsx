@@ -61,7 +61,7 @@ const Details = ({ setIsDetails }: DetailsProps) => {
 				<div className="w-full flex flex-col gap-3">
 					<DetailsItemSlug
 						namespace="Rating"
-						title={itemGame?.reiting ? `${itemGame.reiting}%` : 'N/A'}
+						title={itemGame?.rating ? `${itemGame.rating}%` : 'N/A'}
 						isPrimary
 					/>
 					<DetailsItemSlug

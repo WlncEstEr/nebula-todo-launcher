@@ -17,7 +17,7 @@ export const ItemGame = create<IItemgame>()(set => ({
 		platforms: [],
 		releaseDate: '',
 		genre: '',
-		reiting: 0,
+		rating: 0,
 		creator: '',
 		price: 0,
 		oldPrice: 0,

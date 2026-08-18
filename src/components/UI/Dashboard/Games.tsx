@@ -1,10 +1,13 @@
 import cn from 'clsx'
-import { NavLink } from 'react-router'
+import { useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
+import { buildPath } from '../../../config/routing.config'
 import { gamesData } from '../../../data/games.data'
 import { menuData } from '../../../data/menu.data'
 import { useFocus } from '../../../store/focus.store'
 export function Games() {
   const { zone, dashboardIndex } = useFocus()
+  const navigate = useNavigate()
 
   const quickGames = gamesData
     .filter((g) => g.isBuy && g.isInstaller)
@@ -31,22 +34,21 @@ export function Games() {
         {/* TODO: МОЖНО СДЕЛАТЬ ВЫБОРКУ ИЗ СПИСКА ИГР БИБЛИОТЕКИ ПО НАИБОЛЬШЕМУ КОЛ-ВО ЧАСОВ / ИЛИ ЗДЕСЬ ОТОБРАЖАЮТСЯ ИГРЫ (ДО 5) КОТОРЫЕ ДОБАВЛЕНЫ В ИЗБРАННЫЕ */}
 
         {quickGames.map((game, i) => (
-          <NavLink
+          <div
             key={game.id}
-            to={`/game/${game.id}`}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-1.5 px-1 py-1 rounded-xl transition-colors ease-in-out duration-300 cursor-pointer',
-                {
-                  'bg-hover text-white font-semibold':
-                    zone === 'dashboard' && dashboardIndex === OFFSET + i
-                },
-                {
-                  'bg-hover text-white font-semibold': isActive,
-                  'text-text hover:bg-hover': !isActive
-                }
-              )
+            onClick={() =>
+              game.isInstaller
+                ? toast.success('Game starting...')
+                : void navigate(buildPath('DETAILS', { slug: game.id }))
             }
+            className={cn(
+              'flex items-center gap-1.5 px-1 py-1 rounded-xl transition-colors ease-in-out duration-300 cursor-pointer',
+              {
+                'bg-hover text-white font-semibold':
+                  zone === 'dashboard' && dashboardIndex === OFFSET + i,
+                'text-text hover:bg-hover': true
+              }
+            )}
           >
             <img
               src={game.smallImage}
@@ -54,7 +56,7 @@ export function Games() {
               className="w-5.5 h-5.5 rounded-sm"
             />
             <span className="text-[14px] text-text">{game.title}</span>
-          </NavLink>
+          </div>
         ))}
       </div>
     </div>

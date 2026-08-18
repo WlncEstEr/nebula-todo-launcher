@@ -3,66 +3,133 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-bg: #070b11;
-	--color-hover: #2b2f35;
-	--color-pr: #e7c4fc;
-	--color-sc: #313538;
-	--color-text: #d7dbdf;
-	--color-accent: var(--accent);
+  --color-bg: #070b11;
+  --color-hover: #2b2f35;
+  --color-pr: #e7c4fc;
+  --color-sc: #313538;
+  --color-text: #d7dbdf;
+  --color-accent: var(--accent);
 
-	--font-montserrat: 'Montserrat', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+
+  --animate-pop: pop 0.3s ease-out;
+
+  @keyframes pop {
+    0% {
+      transform: scale(0.5);
+    }
+    60% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-sc);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #45454b;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sc) transparent;
 }
 
 :root {
-	--text: #6b6375;
-	--text-h: #08060d;
-	--bg: #fff;
-	--border: #e5e4e7;
-	--code-bg: #f4f3ec;
-	--accent: #858585;
-	--accent-bg: rgba(137, 70, 189, 0.1);
-	--accent-border: rgba(170, 59, 255, 0.5);
-	--social-bg: rgba(244, 243, 236, 0.5);
-	--shadow:
-		rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #858585;
+  --accent-bg: rgba(137, 70, 189, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-	--sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-	--heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-	--mono: ui-monospace, Consolas, monospace;
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
 
-	font: 18px/145% var(--sans);
-	letter-spacing: 0.18px;
-	color-scheme: light dark;
-	color: var(--text);
-	background: var(--bg);
-	font-synthesis: none;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-	@media (max-width: 1024px) {
-		font-size: 16px;
-	}
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
-		--text: #9ca3af;
-		--text-h: #f3f4f6;
-		--bg: #161616;
-		--border: #2e303a;
-		--code-bg: #1f2028;
-		--accent: #757575;
-		--accent-bg: rgba(117, 73, 161, 0.15);
-		--accent-border: rgba(192, 132, 252, 0.5);
-		--social-bg: rgba(47, 48, 58, 0.5);
-		--shadow:
-			rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-	}
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #161616;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #757575;
+    --accent-bg: rgba(117, 73, 161, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
 }
 
 #root {
-	width: 100%;
-	margin: 0;
-	height: 100vh;
+  width: 100%;
+  margin: 0;
+  height: 100vh;
+}
+
+input[type='checkbox'] {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #6b7280;
+  border-radius: 0.25rem;
+  background: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+input[type='checkbox']:checked {
+  background-color: #6366f1; /* indigo-500 */
+  border-color: #6366f1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
 }

@@ -1,11 +1,13 @@
 import cn from 'clsx'
 import { NavLink } from 'react-router'
-import { quickPlayData } from '../../../data/games.data'
+import { gamesData } from '../../../data/games.data'
 import { menuData } from '../../../data/menu.data'
 import { useFocus } from '../../../store/focus.store'
 export function Games() {
   const { zone, dashboardIndex } = useFocus()
   const OFFSET = menuData.length // 3
+
+  const quicklyGame = gamesData.filter((g) => g.isBuy && g.isInstaller)
 
   return (
     <div>
@@ -24,7 +26,9 @@ export function Games() {
           </Link>
         ))} */}
 
-        {quickPlayData.map((game, i) => (
+        {/* TODO: МОЖНО СДЕЛАТЬ ВЫБОРКУ ИЗ СПИСКА ИГР БИБЛИОТЕКИ ПО НАИБОЛЬШЕМУ КОЛ-ВО ЧАСОВ / ИЛИ ЗДЕСЬ ОТОБРАЖАЮТСЯ ИГРЫ (ДО 5) КОТОРЫЕ ДОБАВЛЕНЫ В ИЗБРАННЫЕ */}
+
+        {quicklyGame.map((game, i) => (
           <NavLink
             key={game.id}
             to={`/game/${game.id}`}
@@ -43,9 +47,9 @@ export function Games() {
             }
           >
             <img
-              src={game.image}
+              src={game.smallImage}
               alt={game.title}
-              className="w-5.5 h-5.5 rounded-lg"
+              className="w-5.5 h-5.5 rounded-sm"
             />
             <span className="text-[14px] text-text">{game.title}</span>
           </NavLink>

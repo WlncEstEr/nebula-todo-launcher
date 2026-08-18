@@ -1,30 +1,62 @@
 import { create } from 'zustand'
-import type { IGame } from '../data/games.data'
+import { persist } from 'zustand/middleware'
 
 export interface IItemgame {
-  itemGame: IGame
+  selectedGameId: string | null
+  favoriteIds: string[]
+  installedIds: string[]
   lastId: number
-  setGame: (game: IGame) => void
+  setSelectedGameId: (id: string | null) => void
   setLastId: (id: number) => void
+  toggleInstalled: (id: string) => void
+  toggleFavorite: (id: string) => void
 }
 
-export const ItemGame = create<IItemgame>()((set) => ({
-  itemGame: {
-    id: '',
-    title: '',
-    image: '',
-    vertImage: '',
-    description: '',
-    platforms: [],
-    releaseDate: '',
-    genre: '',
-    rating: 0,
-    creator: '',
-    price: 0,
-    oldPrice: 0,
-    publisher: ''
-  },
-  lastId: 0,
-  setGame: (game: IGame) => set((state) => ({ ...state, itemGame: game })),
-  setLastId: (id: number) => set((state) => ({ ...state, lastId: id }))
+export const ItemGame = create<IItemgame>()(
+  persist(
+    (set) => ({
+      selectedGameId: null,
+      favoriteIds: [],
+      installedIds: [],
+      lastId: 0,
+
+      setSelectedGameId: (id) =>
+        set((state) => ({ ...state, selectedGameId: id })),
+
+      toggleFavorite: (id) =>
+        set((state) => ({
+          ...state,
+          favoriteIds: state.favoriteIds.includes(id)
+            ? state.favoriteIds.filter((f) => f !== id)
+            : [...state.favoriteIds, id]
+        })),
+
+      toggleInstalled: (id) =>
+        set((state) => ({
+          ...state,
+          installedIds: state.installedIds.includes(id)
+            ? state.installedIds.filter((f) => f !== id)
+            : [...state.installedIds, id]
+        })),
+
+      setLastId: (id) => set((state) => ({ ...state, lastId: id }))
+    }),
+    {
+      name: 'nebula-store',
+      partialize: (state) => ({
+        favoriteIds: state.favoriteIds,
+        installedIds: state.installedIds
+      })
+    }
+  )
+)
+
+export interface IIsKanban {
+  isKanban: boolean
+  setIsKanban: (isKanban: boolean) => void
+}
+
+export const IsKanban = create<IIsKanban>()((set) => ({
+  isKanban: true,
+  setIsKanban: (isKanban: boolean) => set((state) => ({ ...state, isKanban }))
 }))

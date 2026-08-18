@@ -3,19 +3,22 @@ import './App.css'
 import { Header } from './components/UI/Header'
 import { MainGames } from './components/UI/Main/MainGames'
 import { Recommendation } from './components/UI/Main/Recommendation'
+import { gamesData } from './data/games.data'
 import { ItemGame } from './store/store'
 
 function App() {
   // const [isDetails, setIsDetails] = useState(false)
 
-  const { itemGame } = ItemGame()
+  const { selectedGameId } = ItemGame()
 
+  const game = gamesData.find((g) => g?.id === selectedGameId && !g.isBuy)
+  console.log(game)
   return (
     <div className="grid grid-rows-[4fr_3fr_1fr] bg-bg rounded-r-3xl ">
       <div className="relative">
         <div
           style={{
-            backgroundImage: `url('${itemGame?.image}')`
+            backgroundImage: `url('${game?.image}')`
           }}
           className="mask-b-from-20% mask-b-to-85% blur-sm bg-top bg-no-repeat bg-cover rounded-tr-3xl text-white w-full h-full"
         />

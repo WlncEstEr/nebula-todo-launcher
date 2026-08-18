@@ -6,6 +6,7 @@ import { gamesData } from '../../../data/games.data'
 import { ItemGame } from '../../../store/store'
 import { ItemCard } from '../Card/ItemCard'
 
+import { buildPath } from '../../../config/routing.config'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router/internal/react-server-client'
 import 'swiper/css'
@@ -14,7 +15,7 @@ import { useFocus } from '../../../store/focus.store'
 const AUTOPLAY_DELAY = 10000
 
 export function Recommendation() {
-  const { setGame, lastId, setLastId } = ItemGame()
+  const { lastId, setLastId, setSelectedGameId } = ItemGame()
 
   const swiperRef = useRef<SwiperInstance | null>(null)
 
@@ -25,6 +26,8 @@ export function Recommendation() {
   const animationFrameRef = useRef<number | null>(null)
   // eslint-disable-next-line react-hooks/purity
   const startTimeRef = useRef<number>(Date.now())
+
+  const gamesNoBuy = gamesData.filter((game) => !game.isBuy)
 
   const animate = () => {
     // eslint-disable-next-line react-hooks/purity
@@ -48,8 +51,9 @@ export function Recommendation() {
   }
 
   useEffect(() => {
-    setGame(gamesData[lastId])
-  }, [lastId, setGame])
+    const game = gamesNoBuy[lastId]
+    if (game) setSelectedGameId(game.id)
+  }, [lastId, setSelectedGameId])
 
   useEffect(() => {
     startTimeRef.current = Date.now()
@@ -83,7 +87,11 @@ export function Recommendation() {
         case 'Enter':
           e.preventDefault()
           // активный индекс тоже читаем из стора, а не из замыкания
-          void navigate(`/game/${gamesData[ItemGame.getState().lastId].id}`)
+          void navigate(
+            buildPath('DETAILS', {
+              slug: gamesNoBuy[ItemGame.getState().lastId].id
+            })
+          )
           break
       }
     }
@@ -94,13 +102,15 @@ export function Recommendation() {
 
   const syncActiveSlide = (swiper: SwiperInstance) => {
     const activeSlide = swiper.slides[swiper.activeIndex]
+    // console.log(activeSlide)
     const slideIndex = activeSlide?.getAttribute('data-swiper-slide-index')
     if (slideIndex === null || slideIndex === undefined) return
 
     const realIndex = Number(slideIndex)
     setActiveIndex(realIndex)
-    setGame(gamesData[realIndex])
     setLastId(realIndex)
+    const game = gamesNoBuy[realIndex]
+    if (game) setSelectedGameId(game.id)
     resetProgressBar()
   }
 
@@ -122,9 +132,9 @@ export function Recommendation() {
         }}
         onSlideChange={syncActiveSlide}
       >
-        {gamesData.map((game, index) => (
+        {gamesNoBuy.map((game, index) => (
           <SwiperSlide key={game.id}>
-            <Link to={`/game/${game.id}`}>
+            <Link to={buildPath('DETAILS', { slug: game.id })}>
               <ItemCard
                 game={game}
                 isActive={index === deferredActiveIndex}

@@ -7,12 +7,9 @@ import { gamesData } from './data/games.data'
 import { ItemGame } from './store/store'
 
 function App() {
-  // const [isDetails, setIsDetails] = useState(false)
-
   const { selectedGameId } = ItemGame()
 
   const game = gamesData.find((g) => g?.id === selectedGameId && !g.isBuy)
-  console.log(game)
   return (
     <div className="grid grid-rows-[4fr_3fr_1fr] bg-bg rounded-r-3xl ">
       <div className="relative">

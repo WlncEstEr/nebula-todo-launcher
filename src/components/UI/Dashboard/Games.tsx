@@ -5,13 +5,15 @@ import { menuData } from '../../../data/menu.data'
 import { useFocus } from '../../../store/focus.store'
 export function Games() {
   const { zone, dashboardIndex } = useFocus()
-  const OFFSET = menuData.length // 3
 
-  const quicklyGame = gamesData.filter((g) => g.isBuy && g.isInstaller)
+  const quickGames = gamesData
+    .filter((g) => g.isBuy && g.isInstaller)
+    .toSorted((a, b) => b.hoursInGame - a.hoursInGame)
 
+  const OFFSET = menuData.length
   return (
     <div>
-      <h1 className="uppercase text-[11px]">Quickplay</h1>
+      <h1 className="uppercase text-[11px]">QuicklyPlay</h1>
       <div className="flex flex-col gap-1 mt-2">
         {/* {quickPlayData.map((game) => (
           <Link key={game.id} to={`/game/${game.id}`}>
@@ -28,7 +30,7 @@ export function Games() {
 
         {/* TODO: МОЖНО СДЕЛАТЬ ВЫБОРКУ ИЗ СПИСКА ИГР БИБЛИОТЕКИ ПО НАИБОЛЬШЕМУ КОЛ-ВО ЧАСОВ / ИЛИ ЗДЕСЬ ОТОБРАЖАЮТСЯ ИГРЫ (ДО 5) КОТОРЫЕ ДОБАВЛЕНЫ В ИЗБРАННЫЕ */}
 
-        {quicklyGame.map((game, i) => (
+        {quickGames.map((game, i) => (
           <NavLink
             key={game.id}
             to={`/game/${game.id}`}

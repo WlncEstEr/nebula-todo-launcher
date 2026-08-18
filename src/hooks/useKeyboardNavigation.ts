@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { To } from 'react-router'
 import { useNavigate } from 'react-router'
-import { quickPlayData } from '../data/games.data'
+import { gamesData } from '../data/games.data'
 import { menuData } from '../data/menu.data'
 import { useFocus } from '../store/focus.store'
 
@@ -10,12 +10,16 @@ interface SidebarItem {
   to: To // тип из react-router — убирает no-unsafe-argument
 }
 
+const quickGames = gamesData
+  .filter((g) => g.isBuy && g.isInstaller)
+  .toSorted((a, b) => b.hoursInGame - a.hoursInGame)
+
 const sidebarItems: SidebarItem[] = [
   ...menuData.map((i) => ({
     id: i.id,
     to: i.id === 'store' ? '/' : `/${i.id}`
   })),
-  ...quickPlayData.map((g) => ({ id: g.id, to: `/game/${g.id}` }))
+  ...quickGames.map((g) => ({ id: g.id, to: `/game/${g.id}` }))
 ]
 
 export function useKeyboardNavigation() {

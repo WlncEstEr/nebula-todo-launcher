@@ -1,5 +1,6 @@
 import {
   ArrowDownToLine,
+  Check,
   Heart,
   HeartOffIcon,
   MoreHorizontal
@@ -9,35 +10,35 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { buildPath } from '../../../config/routing.config'
 import type { IGame } from '../../../data/games.data'
-import { ItemGame } from '../../../store/store'
+import { useStoreGames } from '../../../store/games.store'
 
 interface VerticalCardProps {
-  games: IGame
+  game: IGame
   onMenuClick: (e: MouseEvent, game: IGame) => void
   onInstall: () => void
 }
 
+// const {} = useGames()
+
 export function VerticalCard({
-  games,
+  game,
   onMenuClick,
   onInstall
 }: VerticalCardProps) {
   const navigate = useNavigate()
 
-  const { favoriteIds, toggleFavorite } = ItemGame()
-  const isFavorite = favoriteIds.includes(games.id)
-
+  const { updateGame } = useStoreGames()
   const [isHovered, setIsHovered] = useState(false)
 
   return (
     <div className="relative rounded-lg w-50 h-75 cursor-pointer">
       <div
-        onClick={() => void navigate(buildPath('DETAILS', { slug: games.id }))}
+        onClick={() => void navigate(buildPath('DETAILS', { slug: game.id }))}
         className="w-full h-5/6 rounded-t-lg overflow-hidden relative"
       >
         <img
-          src={games.vertImage}
-          alt={games.id}
+          src={game.vertImage}
+          alt={game.id}
           className="w-full h-full object-cover opacity-85 hover:scale-105 transition-transform duration-300 ease-in-out"
         />
         <div
@@ -46,10 +47,10 @@ export function VerticalCard({
           onMouseLeave={() => setIsHovered(false)}
           onClick={(e) => {
             e.stopPropagation()
-            toggleFavorite(games.id)
+            updateGame(game.id, { isFavorite: !game.isFavorite })
           }}
         >
-          {isFavorite ? (
+          {game.isFavorite ? (
             isHovered ? (
               <HeartOffIcon
                 key="off"
@@ -79,24 +80,33 @@ export function VerticalCard({
         <div className="relative flex justify-between items-end">
           <h3
             onClick={() =>
-              void navigate(buildPath('DETAILS', { slug: games.id }))
+              void navigate(buildPath('DETAILS', { slug: game.id }))
             }
             className="text-text text-[17px] font-semibold mt-1 px-1 line-clamp-1 break-all w-full"
           >
-            {games.title}
+            {game.title}
           </h3>
 
           <MoreHorizontal
             className="text-text cursor-pointer"
-            onClick={(e) => onMenuClick(e, games)}
+            onClick={(e) => onMenuClick(e, game)}
           />
         </div>
         <div
           className="text-text text-[13px] font-normal px-1 flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
-          onClick={onInstall}
+          onClick={() => game.isInstaller && onInstall}
         >
-          <ArrowDownToLine size={12} />
-          Установить
+          {game.isInstaller ? (
+            <>
+              <ArrowDownToLine size={12} />
+              Установить
+            </>
+          ) : (
+            <>
+              <Check size={12} />
+              Установлено
+            </>
+          )}
         </div>
       </div>
     </div>

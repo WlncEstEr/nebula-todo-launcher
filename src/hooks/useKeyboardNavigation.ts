@@ -11,7 +11,7 @@ interface SidebarItem {
 }
 
 const quickGames = gamesData
-  .filter((g) => g.isBuy && g.isInstaller)
+  .filter((g) => g.isFavorite)
   .toSorted((a, b) => b.hoursInGame - a.hoursInGame)
 
 const sidebarItems: SidebarItem[] = [

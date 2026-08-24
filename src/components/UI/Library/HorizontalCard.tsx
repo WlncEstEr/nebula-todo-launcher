@@ -1,12 +1,13 @@
 import {
   ArrowDownToLine,
+  Check,
   Heart,
   HeartOffIcon,
   MoreHorizontal
 } from 'lucide-react'
 import { useState, type MouseEvent } from 'react'
 import type { IGame } from '../../../data/games.data'
-import { ItemGame } from '../../../store/store'
+import { useStoreGames } from '../../../store/games.store'
 
 interface HorizontalCardProps {
   game: IGame
@@ -19,9 +20,7 @@ export function HorizontalCard({
   onMenuClick,
   onInstall
 }: HorizontalCardProps) {
-  const { favoriteIds, toggleFavorite } = ItemGame()
-  const isFavorite = favoriteIds.includes(game.id)
-
+  const { updateGame } = useStoreGames()
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -41,8 +40,17 @@ export function HorizontalCard({
                 onClick={onInstall}
                 className="flex items-center gap-1 text-[13px] font-medium cursor-pointer"
               >
-                <ArrowDownToLine size={12} />
-                Установить
+                {game.isInstaller ? (
+                  <>
+                    <ArrowDownToLine size={12} />
+                    Установить
+                  </>
+                ) : (
+                  <>
+                    <Check size={12} />
+                    Установлено
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -52,10 +60,10 @@ export function HorizontalCard({
             onMouseLeave={() => setIsHovered(false)}
             onClick={(e) => {
               e.stopPropagation()
-              toggleFavorite(game.id)
+              updateGame(game.id, { isFavorite: !game.isFavorite })
             }}
           >
-            {isFavorite ? (
+            {game.isFavorite ? (
               isHovered ? (
                 <HeartOffIcon
                   key="off"

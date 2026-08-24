@@ -4,5 +4,17 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [react(), tailwindcss()]
+  plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api.rawg.io',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      }
+    }
+  }
 })

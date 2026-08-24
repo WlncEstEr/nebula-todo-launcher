@@ -254,7 +254,7 @@ export const gamesData: IGame[] = [
     hoursInGame: 40,
     isFavorite: false,
     isBuy: true,
-    isInstaller: true
+    isInstaller: false
   },
   {
     id: 'the-witcher-3',
@@ -346,7 +346,7 @@ export const gamesData: IGame[] = [
     hoursInGame: 100,
     isFavorite: false,
     isBuy: true,
-    isInstaller: true
+    isInstaller: false
   },
   {
     id: 'sekiro',
@@ -390,7 +390,7 @@ export const gamesData: IGame[] = [
     finallySize: 150,
     publisher: 'Bethesda Softworks',
     hoursInGame: 60,
-    isFavorite: false,
+    isFavorite: true,
     isBuy: true,
     isInstaller: false
   }

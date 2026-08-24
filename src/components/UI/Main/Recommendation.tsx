@@ -2,15 +2,15 @@ import { useDeferredValue, useEffect, useRef, useState } from 'react'
 import type { Swiper as SwiperInstance } from 'swiper'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { gamesData } from '../../../data/games.data'
 import { ItemGame } from '../../../store/store'
 import { ItemCard } from '../Card/ItemCard'
 
-import { buildPath } from '../../../config/routing.config'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router/internal/react-server-client'
 import 'swiper/css'
+import { buildPath } from '../../../config/routing.config'
 import { useFocus } from '../../../store/focus.store'
+import { useStoreGames } from '../../../store/games.store'
 
 const AUTOPLAY_DELAY = 10000
 
@@ -27,7 +27,7 @@ export function Recommendation() {
   // eslint-disable-next-line react-hooks/purity
   const startTimeRef = useRef<number>(Date.now())
 
-  const gamesNoBuy = gamesData.filter((game) => !game.isBuy)
+  const gamesNoBuy = useStoreGames((s) => s.games).filter((game) => !game.isBuy)
 
   const animate = () => {
     // eslint-disable-next-line react-hooks/purity

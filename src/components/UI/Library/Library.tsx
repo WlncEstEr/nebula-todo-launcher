@@ -2,8 +2,9 @@ import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { buildPath } from '../../../config/routing.config'
-import { gamesData, type IGame } from '../../../data/games.data'
-import { IsKanban } from '../../../store/store'
+import { type IGame } from '../../../data/games.data'
+import { useStoreGames } from '../../../store/games.store'
+import { IsKanban, ItemGame } from '../../../store/store'
 import { ContextMenu } from '../Context/ContextMenu'
 import { DownloadMenu } from '../Context/DownloadMenu'
 import { HeaderLibrary } from './HeaderLibrary'
@@ -12,18 +13,25 @@ import { VerticalCard } from './VerticalCard'
 
 export function Library() {
   const { isKanban, setIsKanban } = IsKanban()
+  const { downloadMenu, setDownloadMenu } = ItemGame()
 
   const [menu, setMenu] = useState<{ id: string; x: number; y: number } | null>(
     null
   )
-  const [downloadGameId, setDownloadGameId] = useState<string | null>(null)
+  // const [downloadGameId, setDownloadGameId] = useState<string | null>(null)
 
-  const Games = gamesData.filter((game) => game.isBuy === true)
+  const Games = useStoreGames((s) => s.games).filter(
+    (game) => game.isBuy === true
+  )
 
   const navigate = useNavigate()
 
-  const downloadGame = gamesData.find((game) => game.id === downloadGameId)
-  const menuGame = gamesData.find((game) => game.id === menu?.id)
+  const downloadGame = useStoreGames((s) => s.games).find(
+    (game) => game.id === downloadMenu
+  )
+  const menuGame = useStoreGames((s) => s.games).find(
+    (game) => game.id === menu?.id
+  )
 
   const openMenu = (e: MouseEvent, game: IGame) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -41,9 +49,9 @@ export function Library() {
             {Games.map((game) => (
               <VerticalCard
                 key={game.id}
-                games={game}
+                game={game}
                 onMenuClick={openMenu}
-                onInstall={() => setDownloadGameId(game.id)}
+                onInstall={() => setDownloadMenu(game.id)}
               />
             ))}
           </div>
@@ -62,7 +70,7 @@ export function Library() {
                 key={game.id}
                 game={game}
                 onMenuClick={openMenu}
-                onInstall={() => setDownloadGameId(game.id)}
+                onInstall={() => setDownloadMenu(game.id)}
               />
             ))}
           </table>
@@ -77,6 +85,7 @@ export function Library() {
             style={{ top: menu.y - 120, left: menu.x - 240 }}
           >
             <ContextMenu
+              game={menuGame}
               click={() => {
                 setMenu(null)
                 void navigate(buildPath('DETAILS', { slug: menuGame.id }))
@@ -89,7 +98,7 @@ export function Library() {
       {downloadGame && (
         <div
           className="absolute inset-0 z-10 flex items-center justify-center bg-black/50"
-          onClick={() => setDownloadGameId(null)}
+          onClick={() => setDownloadMenu('')}
         >
           <div
             className="w-3/4 h-1/2 bg-bg rounded-xl border border-white/30"
@@ -97,7 +106,7 @@ export function Library() {
           >
             <DownloadMenu
               games={downloadGame}
-              onClose={() => setDownloadGameId(null)}
+              onClose={() => setDownloadMenu('')}
             />
           </div>
         </div>

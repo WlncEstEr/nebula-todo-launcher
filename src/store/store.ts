@@ -6,6 +6,8 @@ export interface IItemgame {
   favoriteIds: string[]
   installedIds: string[]
   lastId: number
+  downloadMenu: string
+  setDownloadMenu: (id: string) => void
   setSelectedGameId: (id: string | null) => void
   setLastId: (id: number) => void
   toggleInstalled: (id: string) => void
@@ -19,9 +21,12 @@ export const ItemGame = create<IItemgame>()(
       favoriteIds: [],
       installedIds: [],
       lastId: 0,
+      downloadMenu: '',
 
       setSelectedGameId: (id) =>
         set((state) => ({ ...state, selectedGameId: id })),
+
+      setDownloadMenu: (id) => set((state) => ({ ...state, downloadMenu: id })),
 
       toggleFavorite: (id) =>
         set((state) => ({

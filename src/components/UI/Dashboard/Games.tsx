@@ -1,16 +1,17 @@
 import cn from 'clsx'
-import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
-import { buildPath } from '../../../config/routing.config'
-import { gamesData } from '../../../data/games.data'
 import { menuData } from '../../../data/menu.data'
 import { useFocus } from '../../../store/focus.store'
+import { useStoreGames } from '../../../store/games.store'
+import { ItemGame } from '../../../store/store'
+
 export function Games() {
   const { zone, dashboardIndex } = useFocus()
-  const navigate = useNavigate()
 
-  const quickGames = gamesData
-    .filter((g) => g.isBuy && g.isInstaller)
+  const { setDownloadMenu } = ItemGame()
+
+  const quickGames = useStoreGames((s) => s.games)
+    .filter((g) => g.isFavorite)
     .toSorted((a, b) => b.hoursInGame - a.hoursInGame)
 
   const OFFSET = menuData.length
@@ -36,10 +37,11 @@ export function Games() {
         {quickGames.map((game, i) => (
           <div
             key={game.id}
+            // TODO: Пофиксить функцию открытия окна установки, когда будет реализованно через tanstack query и локальную БД
             onClick={() =>
-              game.isInstaller
+              !game.isInstaller
                 ? toast.success('Game starting...')
-                : void navigate(buildPath('DETAILS', { slug: game.id }))
+                : setDownloadMenu(game.id)
             }
             className={cn(
               'flex items-center gap-1.5 px-1 py-1 rounded-xl transition-colors ease-in-out duration-300 cursor-pointer',

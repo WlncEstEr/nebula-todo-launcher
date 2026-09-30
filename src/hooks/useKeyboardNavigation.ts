@@ -53,9 +53,11 @@ export function useKeyboardNavigation() {
         }
         case 'ArrowLeft':
         case 'ArrowRight': {
-          e.preventDefault()
-          // горизонталь → главный экран (свайпер отреагирует сам)
-          if (zone !== 'main') setZone('main')
+          if (zone === 'dashboard') {
+            e.preventDefault()
+            // горизонталь → главный экран (свайпер отреагирует сам)
+            setZone('main')
+          }
           break
         }
         case 'Enter':

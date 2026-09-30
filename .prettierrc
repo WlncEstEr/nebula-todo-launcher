@@ -7,5 +7,24 @@
   "arrowParens": "always",
   "bracketSpacing": true,
   "endOfLine": "lf",
-  "jsxSingleQuote": false
+  "jsxSingleQuote": false,
+  "importOrder": [
+  "<THIRD_PARTY_MODULES>",
+  "^@/components/UI/(.*)$",
+  "^@/components/(.*)$",
+  "^@/data/(.*)$",
+  "^@/service/(.*)$",
+  "^@/store/(.*)$",
+  "^@/hooks/(.*)$",
+  "^@/config/(.*)$",
+  "^@/api/(.*)$",
+  "^@/types/(.*)$",
+  "^@/assets/(.*)$",
+  "^../(.*)",
+  "^./(.*)",
+  "(.scss)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

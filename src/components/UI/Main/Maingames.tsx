@@ -1,13 +1,14 @@
 import { PlusCircle } from 'lucide-react'
-import { gamesData } from '../../../data/games.data'
+import { useGames } from '../../../hooks/useGames'
 import { ItemGame } from '../../../store/store'
 import { Button } from '../Button/Button'
-import { FieldDiscount } from '../FieldDiscount/FieldDiscount'
 
 export function MainGames() {
   const { selectedGameId } = ItemGame()
 
-  const game = gamesData.find((g) => g?.id === selectedGameId)
+  const { data } = useGames()
+
+  const game = data?.find((g) => g?.id === selectedGameId)
 
   return (
     <div className="pt-10 pl-2.5 w-full flex gap-5">
@@ -17,19 +18,19 @@ export function MainGames() {
           src={game?.image}
           alt={game?.title}
         />
-        <div className="absolute right-3 bottom-3">
+        {/* <div className="absolute right-3 bottom-3">
           <FieldDiscount
             price={game?.price ?? 0}
             oldPrice={game?.oldPrice ?? 0}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-col w-full justify-center">
         <h1 className="text-4xl font-bold text-text font-montserrat">
           {game?.title}
         </h1>
-        <p className="text-[18px] text-gray-400">{game?.creator}</p>
+        {/* <p className="text-[18px] text-gray-400">{game?.creator}</p> */}
         <div className="flex gap-2 mt-5">
           <Button title="Buy Now" isPrimary />
           <Button title="Wishlist" icon={<PlusCircle />} />

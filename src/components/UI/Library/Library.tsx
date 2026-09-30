@@ -1,12 +1,17 @@
 import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+
+import { useStoreLibrary } from '@/store/library.store'
+
+import type { IGame } from '@/types/games.types'
+
 import { buildPath } from '../../../config/routing.config'
-import { type IGame } from '../../../data/games.data'
 import { useStoreGames } from '../../../store/games.store'
 import { IsKanban, ItemGame } from '../../../store/store'
 import { ContextMenu } from '../Context/ContextMenu'
 import { DownloadMenu } from '../Context/DownloadMenu'
+
 import { HeaderLibrary } from './HeaderLibrary'
 import { HorizontalCard } from './HorizontalCard'
 import { VerticalCard } from './VerticalCard'
@@ -19,6 +24,10 @@ export function Library() {
     null
   )
   // const [downloadGameId, setDownloadGameId] = useState<string | null>(null)
+
+  const isBuy = useStoreLibrary((s) => s.purchasedIds.includes(menu?.id ?? ''))
+
+  console.log(isBuy)
 
   const Games = useStoreGames((s) => s.games).filter(
     (game) => game.isBuy === true

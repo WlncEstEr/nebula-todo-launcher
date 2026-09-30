@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { getGames } from '../service/games.service'
+import { getOneGame } from '../service/games.service'
 
-export function useGames() {
+export function useOneGames(id: string) {
   const { data, isLoading } = useQuery({
-    queryKey: ['games'],
+    queryKey: ['game', id],
     queryFn: async () => {
-      const response = await getGames()
+      const response = await getOneGame(1, id)
       return response
     }
   })

@@ -3,17 +3,19 @@ import './App.css'
 import { Header } from './components/UI/Header'
 import { MainGames } from './components/UI/Main/MainGames'
 import { Recommendation } from './components/UI/Main/Recommendation'
-import { useStoreGames } from './store/games.store'
+import { useGames } from './hooks/useGames'
 import { ItemGame } from './store/store'
 
 function App() {
   const { selectedGameId } = ItemGame()
 
-  const game = useStoreGames((s) => s.games).find(
-    (g) => g?.id === selectedGameId && !g.isBuy
-  )
+  // TODO: ПЕРЕДЕЛАТЬ ОТОБРАЖЕНИЕ ИГР ПОД RAWG API
+
+  const { data } = useGames()
+  const game = data?.find((g) => g?.id === selectedGameId)
+
   return (
-    <div className="grid grid-rows-[4fr_3fr_1fr] bg-bg rounded-r-3xl ">
+    <div className="grid grid-rows-[4fr_3fr_1fr] bg-bg rounded-r-3xl h-[80vh]">
       <div className="relative">
         <div
           style={{

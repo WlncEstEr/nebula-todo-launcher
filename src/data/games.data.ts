@@ -1,3 +1,5 @@
+import type { IGame } from '@/types/games.types'
+
 export interface IQuickPlay {
   id: string
   title: string
@@ -22,33 +24,6 @@ export const quickPlayData: IQuickPlay[] = [
   }
 ]
 
-export interface IGame {
-  id: string
-  title: string
-  image: string
-  vertImage: string
-  smallImage: string
-  description: string
-  platforms: string[]
-  releaseDate: string
-  genre: string
-  rating: number | null
-  creator: string
-  publisher: string
-  price?: number | null
-  oldPrice?: number
-  gameSize?: number
-  finallySize?: number
-  dlc?: string[]
-  achievements?: string[]
-  screenshots?: string[]
-  videos?: string[]
-  hoursInGame: number
-  isBuy: boolean
-  isFavorite: boolean
-  isInstaller: boolean
-}
-
 export const gamesData: IGame[] = [
   {
     id: 'hogwarts-legacy',
@@ -56,7 +31,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/hogwarts-legacy.jpg',
     vertImage: '/images/vertical/vert-hogwarts-legacy.jpg',
     smallImage: '/public/images/small/small-hogwarts-legacy.jpg',
-    creator: 'Portkey Games',
+    creator: ['Portkey Games'],
     description:
       'Hogwarts Legacy is an immersive, open-world action RPG set in the world first introduced in the Harry Potter books. Experience life as a student at the Hogwarts School of Witchcraft and Wizardry like never before, as you live the unwritten and embark on a dangerous journey to uncover hidden truths of the wizarding world.',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
@@ -79,7 +54,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/little-nightmares.jpg',
     vertImage: '/images/vertical/vert-little-nightmares.jpg',
     smallImage: '/images/small/small-little-nightmares.jpg',
-    creator: 'Tarsier Studios',
+    creator: ['Tarsier Studios'],
     description:
       'Little Nightmares is a psychological horror platformer game developed by Tarsan Games. Players control a young girl named Six as she navigates through a series of surreal and disturbing environments.',
     platforms: ['PC', 'PS4', 'Xbox One'],
@@ -102,7 +77,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/little-nightmares-2.jpg',
     vertImage: '/images/vertical/vert-little-nightmares-2.jpg',
     smallImage: '/images/small/small-little-nightmares.jpg',
-    creator: 'Tarsier Studios',
+    creator: ['Tarsier Studios'],
     description:
       'Little Nightmares 2 is a psychological horror platformer game developed by Tarsan Games. Players control a young girl named Six as she navigates through a series of surreal and disturbing environments.',
     platforms: ['PC', 'PS4', 'Xbox One'],
@@ -125,7 +100,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/the-finals.jpg',
     vertImage: '/images/vertical/vert-the-finals.jpg',
     smallImage: '/images/small/small-the-finals.jpg',
-    creator: 'Embark Studios',
+    creator: ['Embark Studios'],
     description:
       'The Finals is a competitive first-person shooter game developed by Embark Studios. Players compete in fast-paced, team-based matches across various dynamic and destructible environments.',
     platforms: ['PC', 'Xbox Series X/S'],
@@ -147,7 +122,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/saints-row-3.jpg',
     vertImage: '/images/vertical/vert-saints-row-3.jpg',
     smallImage: '/images/small/small-saints-row-3.jpg',
-    creator: 'Volition',
+    creator: ['Volition'],
     description:
       'Saint Row 3 is an action-adventure game developed by Volition. Players take on the role of a young man named Marcellus Washington as he navigates through the streets of Saint Row.',
     platforms: ['PC', 'PS4', 'Xbox One'],
@@ -170,7 +145,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/cyberpunk-2077.jpg',
     vertImage: '/images/vertical/vert-cyberpunk-2077.jpg',
     smallImage: '/images/small/small-cyberpunk-2077.jpg',
-    creator: 'CD Projekt Red',
+    creator: ['CD Projekt Red'],
     description:
       'Cyberpunk 2077 is an open-world action RPG set in the megalopolis of Night City, where you play as a mercenary outlaw caught in a fight for survival. Customize your character, upgrade your cyberware and make choices that shape the city and the story around you.',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
@@ -193,7 +168,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/red-dead-redemption-2.jpg',
     vertImage: '/images/vertical/vert-red-dead-redemption-2.jpg',
     smallImage: '/images/small/small-red-dead-redemption-2.jpg',
-    creator: 'Rockstar Studios',
+    creator: ['Rockstar Studios'],
     description:
       'Red Dead Redemption 2 is an epic tale of life in America at the dawn of the modern age. Arthur Morgan and the Van der Linde gang are outlaws on the run, chasing a life of freedom while the world closes in around them.',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
@@ -216,7 +191,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/elden-ring.jpg',
     vertImage: '/images/vertical/vert-elden-ring.jpg',
     smallImage: '/images/small/small-elden-ring.jpg',
-    creator: 'FromSoftware',
+    creator: ['FromSoftware'],
     description:
       'Elden Ring is a vast dark fantasy action RPG set in the Lands Between. Rise, Tarnished, and become the Elden Lord by exploring treacherous regions, facing demigods and uncovering the secrets of the shattered Elden Ring.',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
@@ -239,7 +214,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/god-of-war-ragnarok.jpg',
     vertImage: '/images/vertical/vert-god-of-war-ragnarok.jpg',
     smallImage: '/images/small/small-god-of-war-ragnarok.jpg',
-    creator: 'Santa Monica Studio',
+    creator: ['Santa Monica Studio'],
     description:
       'God of War Ragnarök is the epic conclusion of the Norse saga. Kratos and Atreus journey across the Nine Realms to fight for the future of all things, facing the fury of Thor and the end of the world itself.',
     platforms: ['PC', 'PS4', 'PS5'],
@@ -262,7 +237,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/the-witcher-3.jpg',
     vertImage: '/images/vertical/vert-the-witcher-3.jpg',
     smallImage: '/images/small/small-the-witcher-3.jpg',
-    creator: 'CD Projekt Red',
+    creator: ['CD Projekt Red'],
     description:
       'The Witcher 3: Wild Hunt is an open-world RPG in which you play as professional monster hunter Geralt of Rivia. Track down the Child of Prophecy across war-torn lands, complete contracts and make choices that shape the ending of your adventure.',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S', 'Switch'],
@@ -285,7 +260,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/gta-5.jpg',
     vertImage: '/images/vertical/vert-gta-5.jpg',
     smallImage: '/images/small/small-gta-5.jpg',
-    creator: 'Rockstar North',
+    creator: ['Rockstar North'],
     description:
       'Grand Theft Auto V is a sprawling open-world action game set in Los Santos and Blaine County. Step into the lives of three very different criminals as they pull off daring heists across the city in a shared story of ambition and betrayal.',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
@@ -308,7 +283,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/resident-evil-4.jpg',
     vertImage: '/images/vertical/vert-resident-evil-4.jpg',
     smallImage: '/images/small/small-resident-evil-4.jpg',
-    creator: 'Capcom',
+    creator: ['Capcom'],
     description:
       "Resident Evil 4 is a survival horror reimagining of the classic 2005 game. Special agent Leon S. Kennedy is sent to rescue the president's daughter from a mysterious village in Europe, where a new threat is taking hold.",
     platforms: ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X/S'],
@@ -331,7 +306,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/baldurs-gate-3.jpg',
     vertImage: '/images/vertical/vert-baldurs-gate-3.jpg',
     smallImage: '/images/small/small-baldurs-gate-3.jpg',
-    creator: 'Larian Studios',
+    creator: ['Larian Studios'],
     description:
       "Baldur's Gate 3 is a story-rich RPG set in the Forgotten Realms, based on the fifth edition of Dungeons & Dragons. Gather your party, forge your path through a world of choices and consequences, and resist the mind flayer parasite within you.",
     platforms: ['PC', 'PS5', 'Xbox Series X/S'],
@@ -354,7 +329,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/sekiro.jpg',
     vertImage: '/images/vertical/vert-sekiro.jpg',
     smallImage: '/images/small/small-sekiro.jpg',
-    creator: 'FromSoftware',
+    creator: ['FromSoftware'],
     description:
       'Sekiro: Shadows Die Twice is an action-adventure game set in 16th century Japan. As the one-armed wolf, a disgraced shinobi, you must rescue your lord and exact revenge on your enemies using a prosthetic arm and a deadly blade.',
     platforms: ['PC', 'PS4', 'Xbox One'],
@@ -377,7 +352,7 @@ export const gamesData: IGame[] = [
     image: '/images/covers/starfield.jpg',
     vertImage: '/images/vertical/vert-starfield.jpg',
     smallImage: '/images/small/small-starfield.jpg',
-    creator: 'Bethesda Game Studios',
+    creator: ['Bethesda Game Studios'],
     description:
       'Starfield is a space-faring RPG set in the settled systems, a vast frontier of star systems and planets. Build your ship, explore alien worlds and uncover the mystery of the Artifacts in the biggest universe Bethesda has ever created.',
     platforms: ['PC', 'Xbox Series X/S'],

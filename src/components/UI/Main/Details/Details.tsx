@@ -1,14 +1,20 @@
-import { ArrowLeftCircle } from 'lucide-react'
+import { ArrowLeftCircle, PlusCircle } from 'lucide-react'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { gamesData } from '../../../../data/games.data'
+
+import { useOneGames } from '../../../../hooks/useOneGames'
+import { Button } from '../../Button/Button'
+import { FieldDiscount } from '../../FieldDiscount/FieldDiscount'
+import { LoaderCircl } from '../../Loader'
+import { StarRating } from '../../ProgressBar/StarRating'
+
 import { DetailsItemSlug } from './DetailsItemSlug'
 
 const Details = () => {
   const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
 
-  const itemGame = gamesData.find((game) => game.id === slug)
+  const { data: itemGame, isLoading } = useOneGames(slug ?? '')
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -30,7 +36,7 @@ const Details = () => {
   }
 
   return (
-    <div className="font-montserrat py-2 px-3">
+    <div className="font-montserrat py-2 px-3 h-8/10">
       <div className="flex items-center gap-2 mt-2">
         <ArrowLeftCircle
           size={22}
@@ -41,53 +47,64 @@ const Details = () => {
       </div>
       {/* <h2 className="text-lg font-semibold">Details</h2> */}
       <div className="grid grid-cols-[2fr_4fr] gap-4 mt-3">
-        <div className="w-75 h-100 rounded-lg overflow-hidden shrink-0">
-          <img
-            src={itemGame?.vertImage}
-            alt={itemGame?.id}
-            width={300}
-            height={450}
-            className="w-full h-full object-cover"
-          />
+        <div className="w-75 h-100 flex flex-col items-center gap-2">
+          <div className="w-75 h-100 rounded-lg overflow-hidden shrink-0">
+            {isLoading && <LoaderCircl />}
+            <img
+              src={itemGame?.vertImage}
+              alt={itemGame?.id}
+              width={300}
+              height={450}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <StarRating value={itemGame?.rating ?? 0} />
+          <div className="flex gap-3 mt-5">
+            <FieldDiscount price={itemGame?.oldPrice ?? 0} />
+            {/* <Button title={String(itemGame?.price ?? 0) + '$'} isPrimary /> */}
+            <Button title="Wishlist" icon={<PlusCircle />} />
+          </div>
         </div>
 
         <div>
-          <h2 className="text-lg text-text">{itemGame?.title || 'N/A'}</h2>
+          <h2 className="text-lg text-text">{itemGame?.title ?? 'N/A'}</h2>
           <div className="flex gap-5 w-full justify-around mt-3">
             <div className="w-full flex flex-col gap-3 ">
               <DetailsItemSlug
                 namespace="Developer"
-                title={itemGame?.creator || 'N/A'}
+                title={itemGame?.creator ?? 'N/A'}
                 isPrimary
               />
               <DetailsItemSlug
                 namespace="Publisher"
-                title={itemGame?.publisher || 'N/A'}
+                title={itemGame?.publisher ?? 'N/A'}
                 isPrimary
               />
               <DetailsItemSlug
                 namespace="Release Date"
-                title={itemGame?.releaseDate || 'N/A'}
+                title={itemGame?.releaseDate ?? 'N/A'}
               />
               <DetailsItemSlug
                 namespace="Platform"
-                title={itemGame?.platforms?.join(', ') || 'N/A'}
+                title={itemGame?.platforms?.join(', ') ?? 'N/A'}
               />
               <DetailsItemSlug
                 namespace="Genre"
-                title={itemGame?.genre || 'N/A'}
+                title={itemGame?.genres ?? 'N/A'}
                 isPrimary
               />
               <DetailsItemSlug
                 namespace="Rating"
-                title={itemGame?.rating ? `${itemGame.rating}%` : 'N/A'}
+                title={itemGame?.rating ? `${itemGame.rating}% / 5.00` : 'N/A'}
                 isPrimary
               />
-              <DetailsItemSlug
-                namespace="Description"
-                title={itemGame?.description || 'N/A'}
-                isBlock
-              />
+              <div className="max-h-78 overflow-y-auto">
+                <DetailsItemSlug
+                  namespace="Description"
+                  title={itemGame?.description ?? 'N/A'}
+                  isBlock
+                />
+              </div>
             </div>
           </div>
         </div>

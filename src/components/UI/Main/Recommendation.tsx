@@ -1,16 +1,22 @@
-import { useDeferredValue, useEffect, useRef, useState } from 'react'
-import type { Swiper as SwiperInstance } from 'swiper'
-import { Autoplay } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { ItemGame } from '../../../store/store'
-import { ItemCard } from '../Card/ItemCard'
-
+import {
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router/internal/react-server-client'
+import type { Swiper as SwiperInstance } from 'swiper'
 import 'swiper/css'
+import { Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
 import { buildPath } from '../../../config/routing.config'
+import { useGames } from '../../../hooks/useGames'
 import { useFocus } from '../../../store/focus.store'
-import { useStoreGames } from '../../../store/games.store'
+import { ItemGame } from '../../../store/store'
+import { ItemCard } from '../Card/ItemCard'
 
 const AUTOPLAY_DELAY = 10000
 
@@ -19,6 +25,8 @@ export function Recommendation() {
 
   const swiperRef = useRef<SwiperInstance | null>(null)
 
+  const { data } = useGames()
+
   const [activeIndex, setActiveIndex] = useState(lastId)
   const deferredActiveIndex = useDeferredValue(activeIndex)
 
@@ -26,8 +34,9 @@ export function Recommendation() {
   const animationFrameRef = useRef<number | null>(null)
   // eslint-disable-next-line react-hooks/purity
   const startTimeRef = useRef<number>(Date.now())
-
-  const gamesNoBuy = useStoreGames((s) => s.games).filter((game) => !game.isBuy)
+  const animateRef = useRef<() => void>(() => {
+    ''
+  })
 
   const animate = () => {
     // eslint-disable-next-line react-hooks/purity
@@ -41,19 +50,24 @@ export function Recommendation() {
     }
   }
 
-  const resetProgressBar = () => {
+  useEffect(() => {
+    animateRef.current = animate
+  })
+  const resetProgressBar = useCallback(() => {
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current)
     }
     setProgress(0)
     startTimeRef.current = Date.now()
-    animationFrameRef.current = requestAnimationFrame(animate)
-  }
+    animationFrameRef.current = requestAnimationFrame(() =>
+      animateRef.current()
+    )
+  }, [])
 
   useEffect(() => {
-    const game = gamesNoBuy[lastId]
+    const game = data?.[lastId]
     if (game) setSelectedGameId(game.id)
-  }, [lastId, setSelectedGameId])
+  }, [data, lastId, setSelectedGameId])
 
   useEffect(() => {
     startTimeRef.current = Date.now()
@@ -66,39 +80,44 @@ export function Recommendation() {
     }
   }, [])
 
+  useEffect(() => {
+    useFocus.getState().setZone('main')
+  }, [])
+
   const navigate = useNavigate()
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (!swiperRef.current) return
+      const swiper = swiperRef.current
+      if (!swiper) return
       if (useFocus.getState().zone !== 'main') return
 
       switch (e.key) {
         case 'ArrowLeft':
           e.preventDefault()
-          swiperRef.current.slidePrev()
+          swiper.slidePrev()
           resetProgressBar()
           break
+
         case 'ArrowRight':
           e.preventDefault()
-          swiperRef.current.slideNext()
+          swiper.slideNext()
           resetProgressBar()
           break
-        case 'Enter':
+
+        case 'Enter': {
           e.preventDefault()
-          // активный индекс тоже читаем из стора, а не из замыкания
-          void navigate(
-            buildPath('DETAILS', {
-              slug: gamesNoBuy[ItemGame.getState().lastId].id
-            })
-          )
+          const game = data?.[swiper.realIndex]
+          if (!game) return
+          void navigate(buildPath('DETAILS', { slug: game.slug ?? '' }))
           break
+        }
       }
     }
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, []) // депсы больше не нужны — всё читается из getState()
+  }, [data, navigate, resetProgressBar])
 
   const syncActiveSlide = (swiper: SwiperInstance) => {
     const activeSlide = swiper.slides[swiper.activeIndex]
@@ -109,13 +128,13 @@ export function Recommendation() {
     const realIndex = Number(slideIndex)
     setActiveIndex(realIndex)
     setLastId(realIndex)
-    const game = gamesNoBuy[realIndex]
+    const game = data?.[realIndex]
     if (game) setSelectedGameId(game.id)
     resetProgressBar()
   }
 
   return (
-    <div className="h-full px-3 py-2 flex flex-row gap-3 mt-2">
+    <div className="h-72 px-3 py-2 flex flex-row gap-3 mt-2">
       <Swiper
         modules={[Autoplay]}
         onSwiper={(swiper) => {
@@ -132,7 +151,7 @@ export function Recommendation() {
         }}
         onSlideChange={syncActiveSlide}
       >
-        {gamesNoBuy.map((game, index) => (
+        {data?.map((game, index) => (
           <SwiperSlide key={game.id}>
             <Link to={buildPath('DETAILS', { slug: game.id })}>
               <ItemCard

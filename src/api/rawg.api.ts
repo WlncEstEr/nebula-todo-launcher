@@ -41,7 +41,6 @@ export function transformGameToGame(raw: DetailsGamesRawgAPI): IGames {
       ? [`Screenshots: ${raw.screenshots_count}`]
       : [],
     videos: raw.movies_count ? [`Videos: ${raw.movies_count}`] : []
-    // tba - будет флагом 'isBuy'
     // isBuy: randomBoolean(0.3)
   }
 }

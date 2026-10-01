@@ -1,10 +1,6 @@
 import cn from 'clsx'
 
-import { useStoreLibrary } from '@/store/library.store'
-
 import type { IGame } from '@/types/games.types'
-
-import { FieldDiscount } from '../FieldDiscount/FieldDiscount'
 
 interface IItemCard {
   game: IGame
@@ -21,7 +17,7 @@ export function ItemCard({
   progress = 0,
   onClick
 }: IItemCard) {
-  const isBuy = useStoreLibrary((s) => s.purchasedIds.includes(game.id))
+  // const isBuy = useStoreLibrary((s) => s.purchasedIds.includes(game.id))
   return (
     <div
       onClick={onClick}
@@ -62,7 +58,7 @@ export function ItemCard({
                 clipPath: `inset(0 ${100 - progress}% 0 0)`
               }}
             />
-            {isBuy ? (
+            {/* {isBuy ? (
               <span className="text-green-500 text-sm font-bold">
                 Purchased
               </span>
@@ -70,7 +66,7 @@ export function ItemCard({
               <div className="absolute right-3 bottom-3">
                 <FieldDiscount price={0} oldPrice={0} />
               </div>
-            )}
+            )} */}
           </>
         )}
       </div>

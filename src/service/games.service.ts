@@ -6,10 +6,10 @@ import type { ResponseRawgAPI } from '../types/rawg.types'
 
 const key = import.meta.env.VITE_RAW_KEY as string
 
-export async function getGames(page = 1): Promise<IGame[]> {
+export async function getGames(): Promise<IGame[]> {
   try {
     const { data } = await axiosClassic.get<ResponseRawgAPI>(
-      `/games?key=${key}&page=${page}&page_size=30&ordering=-rating`
+      `/games?key=${key}`
     )
     return data.results.map((raw) => transformRawToGame(raw))
   } catch (error) {
@@ -18,13 +18,10 @@ export async function getGames(page = 1): Promise<IGame[]> {
   }
 }
 
-export async function getOneGame(
-  page = 1,
-  id: string
-): Promise<IGames | undefined> {
+export async function getOneGame(id: string): Promise<IGames | undefined> {
   try {
     const { data } = await axiosClassic.get<DetailsGamesRawgAPI>(
-      `/games/${id}?key=${key}&page=${page}&page_size=30&ordering=-rating`
+      `/games/${id}?key=${key}`
     )
     return transformGameToGame(data)
   } catch (error) {

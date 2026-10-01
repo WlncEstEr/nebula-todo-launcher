@@ -3,14 +3,16 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { useStoreLibrary } from '@/store/library.store'
+import { IsKanban, ItemGame } from '@/store/store'
+
+import { usePurchasedGames } from '@/hooks/useQueries'
+
+import { buildPath } from '@/config/routing.config'
 
 import type { IGame } from '@/types/games.types'
 
-import { buildPath } from '../../../config/routing.config'
-import { useStoreGames } from '../../../store/games.store'
-import { IsKanban, ItemGame } from '../../../store/store'
 import { ContextMenu } from '../Context/ContextMenu'
-import { DownloadMenu } from '../Context/DownloadMenu'
+import { LoaderCircl } from '../Loader'
 
 import { HeaderLibrary } from './HeaderLibrary'
 import { HorizontalCard } from './HorizontalCard'
@@ -25,28 +27,22 @@ export function Library() {
   )
   // const [downloadGameId, setDownloadGameId] = useState<string | null>(null)
 
-  const isBuy = useStoreLibrary((s) => s.purchasedIds.includes(menu?.id ?? ''))
+  // const isBuy = useStoreLibrary((s) => s.purchasedIds.includes(menu?.id ?? ''))
 
-  console.log(isBuy)
+  const ids = useStoreLibrary(useShallow((s) => Object.keys(s.library)))
+  const library = useStoreLibrary((s) => s.library)
 
-  const Games = useStoreGames((s) => s.games).filter(
-    (game) => game.isBuy === true
-  )
-
+  const { games: Games, isLoading } = usePurchasedGames(ids)
+  console.log(Games)
   const navigate = useNavigate()
-
-  const downloadGame = useStoreGames((s) => s.games).find(
-    (game) => game.id === downloadMenu
-  )
-  const menuGame = useStoreGames((s) => s.games).find(
-    (game) => game.id === menu?.id
-  )
 
   const openMenu = (e: MouseEvent, game: IGame) => {
     const rect = e.currentTarget.getBoundingClientRect()
     setMenu({ id: game.id, x: rect.left, y: rect.bottom + 4 })
   }
-
+  if (isLoading) {
+    return <LoaderCircl />
+  }
   return (
     <div className="flex flex-col w-full h-full relative rounded-r-3xl bg-bg">
       <div className="flex text-white ">
@@ -56,12 +52,7 @@ export function Library() {
         {isKanban ? (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 w-full">
             {Games.map((game) => (
-              <VerticalCard
-                key={game.id}
-                game={game}
-                onMenuClick={openMenu}
-                onInstall={() => setDownloadMenu(game.id)}
-              />
+              <VerticalCard key={game.id} game={game} onMenuClick={openMenu} />
             ))}
           </div>
         ) : (
@@ -86,7 +77,7 @@ export function Library() {
         )}
       </div>
 
-      {menu && menuGame && (
+      {menu && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setMenu(null)} />
           <div
@@ -94,17 +85,21 @@ export function Library() {
             style={{ top: menu.y - 120, left: menu.x - 240 }}
           >
             <ContextMenu
-              game={menuGame}
+              game={Games.find((g) => g.id === menu.id)!}
               click={() => {
                 setMenu(null)
-                void navigate(buildPath('DETAILS', { slug: menuGame.id }))
+                void navigate(
+                  buildPath('DETAILS', {
+                    slug: Games.find((g) => g.id === menu.id)!.id
+                  })
+                )
               }}
             />
           </div>
         </>
       )}
 
-      {downloadGame && (
+      {downloadMenu && (
         <div
           className="absolute inset-0 z-10 flex items-center justify-center bg-black/50"
           onClick={() => setDownloadMenu('')}
@@ -113,10 +108,10 @@ export function Library() {
             className="w-3/4 h-1/2 bg-bg rounded-xl border border-white/30"
             onClick={(e) => e.stopPropagation()}
           >
-            <DownloadMenu
+            {/* <DownloadMenu
               games={downloadGame}
               onClose={() => setDownloadMenu('')}
-            />
+            /> */}
           </div>
         </div>
       )}

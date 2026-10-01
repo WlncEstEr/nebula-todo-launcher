@@ -6,7 +6,7 @@ export function useOneGames(id: string) {
   const { data, isLoading } = useQuery({
     queryKey: ['game', id],
     queryFn: async () => {
-      const response = await getOneGame(1, id)
+      const response = await getOneGame(id)
       return response
     }
   })

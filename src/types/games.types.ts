@@ -8,7 +8,7 @@ export interface IGames extends IGame {
   creator: string[]
   publisher: string
   price?: number | null
-  oldPrice?: number
+  oldPrice?: number | null
   gameSize?: number
   finallySize?: number
   dlc?: string[]

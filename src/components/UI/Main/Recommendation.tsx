@@ -96,13 +96,13 @@ export function Recommendation() {
         case 'ArrowLeft':
           e.preventDefault()
           swiper.slidePrev()
-          resetProgressBar()
+          // resetProgressBar()
           break
 
         case 'ArrowRight':
           e.preventDefault()
           swiper.slideNext()
-          resetProgressBar()
+          // resetProgressBar()
           break
 
         case 'Enter': {
@@ -121,7 +121,6 @@ export function Recommendation() {
 
   const syncActiveSlide = (swiper: SwiperInstance) => {
     const activeSlide = swiper.slides[swiper.activeIndex]
-    // console.log(activeSlide)
     const slideIndex = activeSlide?.getAttribute('data-swiper-slide-index')
     if (slideIndex === null || slideIndex === undefined) return
 
@@ -139,8 +138,10 @@ export function Recommendation() {
         modules={[Autoplay]}
         onSwiper={(swiper) => {
           swiperRef.current = swiper
-          swiper.slideToLoop(lastId, 0, false)
+          // swiper.slideToLoop(lastId, 0, false)
+          // syncActiveSlide(swiper)
         }}
+        initialSlide={lastId}
         loop
         spaceBetween={80}
         slidesPerView={3.5}

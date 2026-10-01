@@ -1,9 +1,10 @@
 interface IFieldDiscount {
   price: number
   oldPrice?: number
+  click?: () => void
 }
 
-export function FieldDiscount({ price, oldPrice }: IFieldDiscount) {
+export function FieldDiscount({ price, oldPrice, click }: IFieldDiscount) {
   return (
     <div className="bg-sc  rounded-2xl w-fit flex items-center  ">
       {oldPrice! > 0 && (
@@ -11,8 +12,15 @@ export function FieldDiscount({ price, oldPrice }: IFieldDiscount) {
           ${oldPrice}
         </div>
       )}
-      <div className="bg-pr w-full px-1.5 py-0.5 text-[14px] rounded-2xl text-bg font-bold">
-        {price > 0 ? (price == 0 ? 'Free' : `$${price.toFixed(2)}`) : 'Buy Now'}
+      <div
+        className="bg-pr w-full px-1.5 py-0.5 text-[14px] rounded-2xl text-bg font-bold"
+        onClick={click}
+      >
+        {price > 0
+          ? price == 0
+            ? 'Free'
+            : `$${price.toFixed(2)}`
+          : 'In Library'}
       </div>
     </div>
   )

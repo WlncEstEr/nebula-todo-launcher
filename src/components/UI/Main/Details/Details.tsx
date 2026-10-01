@@ -1,6 +1,10 @@
 import { ArrowLeftCircle, PlusCircle } from 'lucide-react'
 import { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
+
+import { useStoreLibrary } from '@/store/library.store'
+
+import { useSafeGoBack } from '@/hooks/useSaveGoBack'
 
 import { useOneGames } from '../../../../hooks/useOneGames'
 import { Button } from '../../Button/Button'
@@ -11,8 +15,8 @@ import { StarRating } from '../../ProgressBar/StarRating'
 import { DetailsItemSlug } from './DetailsItemSlug'
 
 const Details = () => {
-  const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
+  const goBack = useSafeGoBack()
 
   const { data: itemGame, isLoading } = useOneGames(slug ?? '')
 
@@ -20,20 +24,18 @@ const Details = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        SafeGoBack()
+        goBack()
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
-  function SafeGoBack() {
-    if (navigate.length > 1) {
-      void navigate(-1)
-    } else {
-      void navigate('/', { replace: true })
-    }
-  }
+
+  const { purchase, isPurchased, unpurchase } = useStoreLibrary()
+
+  if (isLoading) return <LoaderCircl />
+  if (!itemGame) return <div>Игра не найдена</div>
 
   return (
     <div className="font-montserrat py-2 px-3 h-8/10">
@@ -41,7 +43,7 @@ const Details = () => {
         <ArrowLeftCircle
           size={22}
           className="cursor-pointer"
-          onClick={SafeGoBack}
+          onClick={goBack}
         />
         <h1 className="text-base font-bold">About this Game</h1>
       </div>
@@ -60,7 +62,14 @@ const Details = () => {
           </div>
           <StarRating value={itemGame?.rating ?? 0} />
           <div className="flex gap-3 mt-5">
-            <FieldDiscount price={itemGame?.oldPrice ?? 0} />
+            <FieldDiscount
+              price={isPurchased(itemGame.id) ? -1 : (itemGame.oldPrice ?? 0)}
+              click={() =>
+                isPurchased(itemGame?.id)
+                  ? unpurchase(itemGame?.id)
+                  : purchase(itemGame?.id)
+              }
+            />
             {/* <Button title={String(itemGame?.price ?? 0) + '$'} isPrimary /> */}
             <Button title="Wishlist" icon={<PlusCircle />} />
           </div>

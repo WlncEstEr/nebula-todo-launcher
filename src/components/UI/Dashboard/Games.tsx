@@ -1,20 +1,19 @@
 import cn from 'clsx'
-import { toast } from 'react-toastify'
-import { menuData } from '../../../data/menu.data'
+
+import { NAV_COUNT } from '@/data/menu.data'
+
+import { useQuickGames } from '@/hooks/useQuickGames'
+
 import { useFocus } from '../../../store/focus.store'
-import { useStoreGames } from '../../../store/games.store'
-import { ItemGame } from '../../../store/store'
+import { LoaderCircl } from '../Loader'
 
 export function Games() {
   const { zone, dashboardIndex } = useFocus()
 
-  const { setDownloadMenu } = ItemGame()
+  const { quickGames, isLoading } = useQuickGames()
+  const OFFSET = NAV_COUNT
 
-  const quickGames = useStoreGames((s) => s.games)
-    .filter((g) => g.isFavorite)
-    .toSorted((a, b) => b.hoursInGame - a.hoursInGame)
-
-  const OFFSET = menuData.length
+  if (isLoading) return <LoaderCircl />
   return (
     <div>
       <h1 className="uppercase text-[11px]">QuicklyPlay</h1>
@@ -38,11 +37,11 @@ export function Games() {
           <div
             key={game.id}
             // TODO: Пофиксить функцию открытия окна установки, когда будет реализованно через tanstack query и локальную БД
-            onClick={() =>
-              !game.isInstaller
-                ? toast.success('Game starting...')
-                : setDownloadMenu(game.id)
-            }
+            // onClick={() =>
+            //   game
+            //     ? toast.success('Game starting...')
+            //     : setDownloadMenu(game.id)
+            // }
             className={cn(
               'flex items-center gap-1.5 px-1 py-1 rounded-xl transition-colors ease-in-out duration-300 cursor-pointer',
               {

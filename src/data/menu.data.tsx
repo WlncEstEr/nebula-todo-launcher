@@ -1,4 +1,5 @@
 import { Handshake, LayoutGrid, ShoppingBag } from 'lucide-react'
+
 import { ROUTES } from '../config/routing.config'
 
 export interface MenuItem {
@@ -28,3 +29,5 @@ export const menuData: MenuItem[] = [
     route: ROUTES.COMMUNITY
   }
 ]
+
+export const NAV_COUNT = menuData.length

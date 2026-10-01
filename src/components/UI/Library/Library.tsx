@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useStoreLibrary } from '@/store/library.store'
 import { IsKanban, ItemGame } from '@/store/store'
@@ -25,15 +26,11 @@ export function Library() {
   const [menu, setMenu] = useState<{ id: string; x: number; y: number } | null>(
     null
   )
-  // const [downloadGameId, setDownloadGameId] = useState<string | null>(null)
-
-  // const isBuy = useStoreLibrary((s) => s.purchasedIds.includes(menu?.id ?? ''))
 
   const ids = useStoreLibrary(useShallow((s) => Object.keys(s.library)))
-  const library = useStoreLibrary((s) => s.library)
 
   const { games: Games, isLoading } = usePurchasedGames(ids)
-  console.log(Games)
+
   const navigate = useNavigate()
 
   const openMenu = (e: MouseEvent, game: IGame) => {

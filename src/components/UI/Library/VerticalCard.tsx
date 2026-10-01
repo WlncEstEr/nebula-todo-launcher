@@ -3,6 +3,10 @@ import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
+import { useStoreLibrary } from '@/store/library.store'
+
+import { useIsFavorite } from '@/hooks/useIsPurchased'
+
 import { buildPath } from '@/config/routing.config'
 
 import type { IGame } from '@/types/games.types'
@@ -17,6 +21,9 @@ export function VerticalCard({ game, onMenuClick }: VerticalCardProps) {
 
   const [isHovered, setIsHovered] = useState(false)
 
+  const isFavorite = useIsFavorite(game.id)
+  const toggleFavorite = useStoreLibrary((s) => s.toggleFavorite)
+
   return (
     <div className="relative rounded-lg w-50 h-75 cursor-pointer">
       <div className="w-full h-5/6 rounded-t-lg overflow-hidden relative">
@@ -29,13 +36,12 @@ export function VerticalCard({ game, onMenuClick }: VerticalCardProps) {
           className="absolute top-3 right-3 cursor-pointer z-10 active:scale-90 transition-transform duration-150"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          // onClick={(e) => {
-          //   e.stopPropagation()
-          //   updateGame(game.id, { isFavorite: !game.isFavorite })
-          // }}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleFavorite(game.id)
+          }}
         >
-          {/* TODO: Что-ниюуть придумать с isFavorite */}
-          {game.isFavorite ? (
+          {isFavorite ? (
             isHovered ? (
               <HeartOffIcon
                 key="off"

@@ -5,13 +5,17 @@ import {
   HeartOffIcon,
   MoreHorizontal
 } from 'lucide-react'
-import { useState, type MouseEvent } from 'react'
-import type { IGame } from '../../../data/games.data'
-import { useStoreGames } from '../../../store/games.store'
+import { type MouseEvent, useState } from 'react'
+
+import { useStoreLibrary } from '@/store/library.store'
+
+import { useIsFavorite } from '@/hooks/useIsPurchased'
+
+import type { IGames } from '@/types/games.types'
 
 interface HorizontalCardProps {
-  game: IGame
-  onMenuClick: (e: MouseEvent, game: IGame) => void
+  game: IGames
+  onMenuClick: (e: MouseEvent, game: IGames) => void
   onInstall: () => void
 }
 
@@ -20,19 +24,17 @@ export function HorizontalCard({
   onMenuClick,
   onInstall
 }: HorizontalCardProps) {
-  const { updateGame } = useStoreGames()
   const [isHovered, setIsHovered] = useState(false)
+
+  const isFavorite = useIsFavorite(game.id)
+  const toggleFavorite = useStoreLibrary((s) => s.toggleFavorite)
 
   return (
     <tr className="px-3 py-2 bg-bg border border-text/10 hover:bg-[#0c131d] w-full rounded-2xl flex justify-between items-center text-center">
       <td className="w-70">
         <div className="flex h-full justify-between items-center gap-3 text-start">
           <div className="flex h-full items-center gap-3">
-            <img
-              src={game.vertImage}
-              alt={game.id}
-              className="w-14 rounded-xl"
-            />
+            <img src={game.image} alt={game.id} className="w-14 rounded-xl" />
 
             <div>
               <h2 className="text-text font-bold line-clamp-1">{game.title}</h2>
@@ -40,7 +42,7 @@ export function HorizontalCard({
                 onClick={onInstall}
                 className="flex items-center gap-1 text-[13px] font-medium cursor-pointer"
               >
-                {game.isInstaller ? (
+                {!isFavorite ? (
                   <>
                     <ArrowDownToLine size={12} />
                     Установить
@@ -60,10 +62,10 @@ export function HorizontalCard({
             onMouseLeave={() => setIsHovered(false)}
             onClick={(e) => {
               e.stopPropagation()
-              updateGame(game.id, { isFavorite: !game.isFavorite })
+              toggleFavorite(game.id)
             }}
           >
-            {game.isFavorite ? (
+            {isFavorite ? (
               isHovered ? (
                 <HeartOffIcon
                   key="off"

@@ -4,6 +4,7 @@ import { useParams } from 'react-router'
 
 import { useStoreLibrary } from '@/store/library.store'
 
+import { useIsPurchased } from '@/hooks/useIsPurchased'
 import { useSafeGoBack } from '@/hooks/useSaveGoBack'
 
 import { useOneGames } from '../../../../hooks/useOneGames'
@@ -32,7 +33,9 @@ const Details = () => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const { purchase, isPurchased, unpurchase } = useStoreLibrary()
+  const isPurchased = useIsPurchased(itemGame?.id)
+  const purchase = useStoreLibrary((s) => s.purchase)
+  const remove = useStoreLibrary((s) => s.remove)
 
   if (isLoading) return <LoaderCircl />
   if (!itemGame) return <div>Игра не найдена</div>
@@ -63,11 +66,9 @@ const Details = () => {
           <StarRating value={itemGame?.rating ?? 0} />
           <div className="flex gap-3 mt-5">
             <FieldDiscount
-              price={isPurchased(itemGame.id) ? -1 : (itemGame.oldPrice ?? 0)}
+              price={isPurchased ? -1 : (itemGame.oldPrice ?? 0)}
               click={() =>
-                isPurchased(itemGame?.id)
-                  ? unpurchase(itemGame?.id)
-                  : purchase(itemGame?.id)
+                isPurchased ? remove(itemGame?.id) : purchase(itemGame?.id)
               }
             />
             {/* <Button title={String(itemGame?.price ?? 0) + '$'} isPrimary /> */}

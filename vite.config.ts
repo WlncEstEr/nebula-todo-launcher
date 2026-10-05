@@ -20,6 +20,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      // конкретные — выше общего, так спокойнее читать
+      '@ui': fileURLToPath(new URL('./src/components/UI', import.meta.url)),
+      '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
